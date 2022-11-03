@@ -1,8 +1,7 @@
-import React, {useContext, useRef, useState} from 'react'
+import React, {useContext, useRef} from 'react'
 import useApi from "./api";
-import {Link, Navigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import UserContext from "./Constext";
-import react from "@vitejs/plugin-react";
 
 function App() {
     const api = useApi()
@@ -16,13 +15,14 @@ function App() {
             username: username.current.value,
             password: password.current.value
         }
+        try {
+            const response = await api.post<{ token: string, roles: string[] }>('/api/authentication/login', JSON.stringify(loginModule), {
+                withCredentials: true
+            })
+            setToken(response.data.token)
+        } catch (error) {
 
-        const response = await api.post<{ token: string, roles: string[] }>('/api/authentication/login', JSON.stringify(loginModule), {
-            withCredentials: true
-        })
-
-        setToken(response.data.token)
-
+        }
     }
     return (
         <div>
