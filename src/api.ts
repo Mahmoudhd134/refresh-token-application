@@ -10,8 +10,8 @@ const api = axios.create({
 })
 
 const UseApi = () => {
-    const {token, setToken} = useContext(UserContext)
-    let t: string | null = null
+    // const {token, setToken} = useContext(UserContext)
+    // let t: string | null = null
 
     useEffect(() => {
         const requestIntercept = api.interceptors.request.use(config => {
@@ -22,12 +22,12 @@ const UseApi = () => {
                 // this does not throw the exception
                 config['headers'] = {
                     ...config["headers"],
-                    'Authorization': `Bearer ${t ?? token}`,
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     'Content-Type': `application/json`
                 }
-                console.log(`sending access token is ${t ?? token}`)
-                console.log(t)
-                t = null
+                // console.log(`sending access token is ${t ?? token}`)
+                // console.log(t)
+                // t = null
             }
 
             return config
@@ -45,10 +45,12 @@ const UseApi = () => {
                         withCredentials: true
                     })
                 console.log('refresh token is gotten')
-                console.log({old: token, new: refreshToken.data.token})
-                setToken(refreshToken.data.token)
+                // console.log({old: token, new: refreshToken.data.token})
+                // setToken(refreshToken.data.token)
                 // originalRequest.headers['Authorization'] = `Bearer ${refreshToken.data.token}`
-                t = refreshToken.data.token
+                // t = refreshToken.data.token
+                localStorage.setItem('token',refreshToken.data.token)
+
                 return api(originalRequest)
             }
             return Promise.reject(error)

@@ -5,7 +5,7 @@ import UserContext from "./Constext";
 
 function App() {
     const api = useApi()
-    const {setToken} = useContext(UserContext)
+    // const {setToken} = useContext(UserContext)
     const username = useRef() as React.MutableRefObject<HTMLInputElement>
     const password = useRef() as React.MutableRefObject<HTMLInputElement>
 
@@ -19,7 +19,8 @@ function App() {
             const response = await api.post<{ token: string, roles: string[] }>('/api/authentication/login', JSON.stringify(loginModule), {
                 withCredentials: true
             })
-            setToken(response.data.token)
+            // setToken(response.data.token)
+            localStorage.setItem('token',response.data.token)
         } catch (error) {
 
         }
